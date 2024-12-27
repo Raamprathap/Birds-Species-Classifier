@@ -6,14 +6,17 @@ import numpy as np
 import os
 import gdown
 
-# Replace FILE_ID with the actual ID from your Google Drive link
-file_id = "1DsRVybC9g3uzARhT0Y-jELELVfKKjA2i"
-url = f"https://drive.google.com/uc?id={file_id}"
-output = "model.h5"  # Desired local filename for the downloaded model
+url = "https://drive.google.com/uc?id=1DsRVybC9g3uzARhT0Y-jELELVfKKjA2i"
+output_path = "Birds-Species-Classifier/model.h5"
 
-gdown.download(url, output, quiet=False)
+# Download the model
+gdown.download(url, output_path, quiet=False)
 
-print("Model downloaded successfully!")
+# Check and print the path where the model is saved
+if os.path.exists(output_path):
+    print(f"Model downloaded successfully to: {os.path.abspath(output_path)}")
+else:
+    print("Model download failed.")
 
 
 app = Flask(__name__)
