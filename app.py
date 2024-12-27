@@ -15,6 +15,7 @@ gdown.download(url, output_path, quiet=False)
 # Check and print the path where the model is saved
 if os.path.exists(output_path):
     print(f"Model downloaded successfully to: {os.path.abspath(output_path)}")
+    os.chmod(output_path, 0o777)
 else:
     print("Model download failed.")
 
