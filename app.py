@@ -52,7 +52,7 @@ def load_model_once():
     global model
     if model is None:
         from tensorflow.keras.models import load_model
-        logger.info(f"\n\nImage saved to")
+        logger.info(f"\n\nLoading model")
         model = load_model(MODEL_OUTPUT_PATH)
         logger.info("Model loaded successfully.")
     return model
