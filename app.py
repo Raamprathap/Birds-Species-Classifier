@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 # Constants
 MODEL_FILE_ID = "18ovFu6gIvn3mOyR83THrBlU_8YXFEaaq/view?usp=drive_link"
-MODEL_OUTPUT_PATH = "Birds/bird_classifier_model.h5"
+MODEL_OUTPUT_PATH = "bird_classifier_model.h5"
 UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'uploads')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
