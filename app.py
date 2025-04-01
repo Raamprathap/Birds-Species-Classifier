@@ -60,53 +60,57 @@ import imghdr
 
 @app.route('/upload', methods=['POST'])
 def upload():
-    """Handle image upload and prediction"""
     if not os.path.exists(MODEL_OUTPUT_PATH):
         return jsonify({'error': 'Model not found. Please restart the application.'}), 500
-    
+
     image_file = request.files.get('image')
     if not image_file:
         return jsonify({'error': 'No image file provided'}), 400
-    
-    try:
-        # Save uploaded image
-        image_path = os.path.join(app.config['UPLOAD_FOLDER'], image_file.filename)
-        image_file.save(image_path)
-        logger.info(f"\n\nImage saved to {image_path}")
-        
-        # Load the model once and make prediction
-        model = load_model_once()  # Lazy loading
-        logger.info(f"\n\nImage saved to {image_path}")
-        # Preprocess image
-        from tensorflow.keras.preprocessing import image
-        img = image.load_img(image_path, target_size=(222, 222))
-        logger.info(f"\n\nImage saved to {image_path}")
-        img_array = image.img_to_array(img)
-        logger.info(f"Image shape: {img_array.shape}")
 
+    try:
+        # Assign a default filename if needed
+        filename = image_file.filename if image_file.filename else "uploaded_image.jpg"
+        image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        
+        # Save uploaded image
+        image_file.save(image_path)
+
+        # Debugging Logs
+        if os.path.exists(image_path) and os.path.getsize(image_path) > 0:
+            logger.info(f"Image successfully saved to {image_path}")
+        else:
+            logger.error("Image was not saved correctly.")
+            return jsonify({'error': 'Image was not saved correctly'}), 500
+
+        # Load the model
+        model = load_model_once()
+
+        # Preprocess Image
+        from tensorflow.keras.preprocessing import image
         img = image.load_img(image_path, target_size=(222, 222))
         img_array = image.img_to_array(img)
         img_array = np.expand_dims(img_array, axis=0)
         img_array /= 255.0
-        
-        # Make prediction
+
+        # Make Prediction
         predictions = model.predict(img_array)
         predicted_class = np.argmax(predictions)
         class_label = classes[predicted_class]
         confidence = float(predictions[0][predicted_class] * 100)
-        
+
         response_data = {
             'species': class_label,
             'confidence': round(confidence, 2),
-            'filename': image_file.filename
+            'filename': filename
         }
-        
+
         logger.info(f"Prediction: {response_data}")
         return jsonify(response_data)
-        
+
     except Exception as e:
         logger.error(f"Error processing image: {e}")
         return jsonify({'error': f'Error processing image: {str(e)}'}), 500
+
 
 @app.errorhandler(Exception)
 def handle_exception(e):
