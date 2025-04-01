@@ -84,7 +84,7 @@ def upload():
         img_array = image.img_to_array(img)
         logger.info(f"Image shape: {img_array.shape}")
 
-        img = image.load_img(image_path, target_size=(222, 222))
+        img = image.load_img(image_path, target_size=(224, 224))
         img_array = image.img_to_array(img)
         img_array = np.expand_dims(img_array, axis=0)
         img_array /= 255.0
