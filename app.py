@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Constants
-MODEL_FILE_ID = "18ovFu6gIvn3mOyR83THrBlU_8YXFEaaq/view?usp=drive_link"
+MODEL_FILE_ID = "18ovFu6gIvn3mOyR83THrBlU_8YXFEaaq"
 MODEL_OUTPUT_PATH = "bird_classifier_model.h5"
 UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'uploads')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -127,6 +127,6 @@ if __name__ == '__main__':
     model_ready = download_model_if_needed()
     if model_ready:
         logger.info("Starting Flask server...")
-        app.run(debug=False, use_reloader=False)  # Disable reloader
+        app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)), debug=False, use_reloader=False)  # Disable reloader
     else:
         logger.error("Failed to download model. Please check your internet connection or the file ID.")
