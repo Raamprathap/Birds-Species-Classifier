@@ -56,33 +56,34 @@ def load_model_once():
         model = load_model(MODEL_OUTPUT_PATH)
         logger.info("Model loaded successfully.")
     return model
+import imghdr
 
 @app.route('/upload', methods=['POST'])
 def upload():
-    """Handle image upload and prediction"""
     if not os.path.exists(MODEL_OUTPUT_PATH):
         return jsonify({'error': 'Model not found. Please restart the application.'}), 500
-    
+
     image_file = request.files.get('image')
     if not image_file:
         return jsonify({'error': 'No image file provided'}), 400
-    
+
     try:
         # Save uploaded image
         image_path = os.path.join(app.config['UPLOAD_FOLDER'], image_file.filename)
         image_file.save(image_path)
-        logger.info(f"\n\nImage saved to {image_path}")
         
-        # Load the model once and make prediction
-        model = load_model_once()  # Lazy loading
-        logger.info(f"\n\nImage saved to {image_path}")
+        # Verify if the file is an image
+        if imghdr.what(image_path) is None:
+            os.remove(image_path)  # Remove invalid file
+            return jsonify({'error': 'Uploaded file is not a valid image'}), 400
+
+        logger.info(f"Image saved to {image_path}")
+        
+        # Load model
+        model = load_model_once()
+
         # Preprocess image
         from tensorflow.keras.preprocessing import image
-        img = image.load_img(image_path, target_size=(222, 222))
-        logger.info(f"\n\nImage saved to {image_path}")
-        img_array = image.img_to_array(img)
-        logger.info(f"Image shape: {img_array.shape}")
-
         img = image.load_img(image_path, target_size=(222, 222))
         img_array = image.img_to_array(img)
         img_array = np.expand_dims(img_array, axis=0)
@@ -93,7 +94,7 @@ def upload():
         predicted_class = np.argmax(predictions)
         class_label = classes[predicted_class]
         confidence = float(predictions[0][predicted_class] * 100)
-        
+
         response_data = {
             'species': class_label,
             'confidence': round(confidence, 2),
@@ -102,10 +103,11 @@ def upload():
         
         logger.info(f"Prediction: {response_data}")
         return jsonify(response_data)
-        
+
     except Exception as e:
         logger.error(f"Error processing image: {e}")
         return jsonify({'error': f'Error processing image: {str(e)}'}), 500
+
 
 
 @app.errorhandler(Exception)
