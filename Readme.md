@@ -1,14 +1,13 @@
 # 🦜 Bird Species Classifier
 
 ## 📌 Overview
-The Bird Species Classifier is a deep learning-based web application that classifies bird species from images using a trained convolutional neural network (CNN). Users can upload an image of a bird, and the model will predict its species.
+The Bird Species Classifier is a deep learning-based web application that accurately identifies bird species from uploaded images using a custom-trained convolutional neural network (CNN). Simply upload a bird image, and the model will predict its species with high precision.
 
 ## 🌐 Demo
 Live Deployment: [Bird Species Classifier](https://birds-species-classifier.onrender.com)
 
 ## 📦 Dataset Structure
 The dataset is organized into training, validation, and testing directories:
-
 ```
 Birds/
 ├── train/
@@ -24,7 +23,6 @@ Birds/
 
 ## 🤖 Model Details
 **Model Architecture:**
-
 ```
 Model: "sequential"
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
@@ -52,21 +50,15 @@ Model: "sequential"
 - **Storage:** Google Drive (for model storage)
 - **Deployment:** Render (for web hosting)
 
-## 🔗 Model Download
-[Download Pretrained Model](https://drive.google.com/uc?id=18ovFu6gIvn3mOyR83THrBlU_8YXFEaaq)
+## 🔗 Pretrained Model Access
+The pretrained model is available upon request for research and educational purposes. Please contact me via email for access:
+- 📧 **Email:** [raamprathap17242@gmail.com](mailto:raamprathap17242@gmail.com)
 
-## 🚀 Training the Model
-You can train the model from scratch or continue training an existing model.
-
-### Train from Scratch
-```python
-python train_from_scratch.py
-```
-
-### Train Existing Model with More Epochs
-```python
-python train_existing_model.py
-```
+## 📊 Model Performance
+The model achieves:
+- **Accuracy:** 94.8% on the validation dataset
+- **Support:** 525 distinct bird species
+- **Inference Time:** ~0.5 seconds per image
 
 ## ⭐ Contribute & Support
 We welcome contributions! If you want to improve the project:
@@ -83,6 +75,7 @@ We welcome contributions! If you want to improve the project:
 - 👤 **Raam Prathap**  
   📧 Email: [raamprathap17242@gmail.com](mailto:raamprathap17242@gmail.com)  
   🔗 GitHub: [Raam Prathap](https://github.com/Raamprathap)  
+  🔗 LinkedIn: [Raam Prathap](https://linkedin.com/in/raam-prathap)
 
 ---
 
